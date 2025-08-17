@@ -1,0 +1,8 @@
+CREATE TABLE files (
+    id UUID PRIMARY KEY,
+    owner_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    name TEXT NOT NULL,
+    size BIGINT NOT NULL,
+    iv BYTEA NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+);
