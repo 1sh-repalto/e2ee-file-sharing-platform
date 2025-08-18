@@ -7,9 +7,9 @@ import (
 )
 
 type Share struct {
-	ID					uuid.UUID	`db:"id"`
-	FileID				uuid.UUID	`db:"file_id"`
-	RecipientID			uuid.UUID	`db:"recipient_id"`
-	WrappedKey			string		`db:"wrapped_key"`
-	CreatedAt			time.Time	`db:"created_at"`
+	ID          uuid.UUID `db:"id"`
+	FileID      uuid.UUID `db:"file_id"`
+	RecipientID uuid.UUID `db:"recipient_id"`
+	WrappedKey  string    `db:"wrapped_key"`
+	CreatedAt   time.Time `db:"created_at"`
 }
