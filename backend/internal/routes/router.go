@@ -5,8 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter(userHandler *handler.UserHandler) *gin.Engine {
-	r := gin.Default()
+func SetupRouter(r *gin.Engine, userHandler *handler.UserHandler) *gin.Engine {
 
 	api := r.Group("/api")
 	{
