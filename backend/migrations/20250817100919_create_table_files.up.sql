@@ -4,5 +4,5 @@ CREATE TABLE files (
     name TEXT NOT NULL,
     size BIGINT NOT NULL,
     iv BYTEA NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
