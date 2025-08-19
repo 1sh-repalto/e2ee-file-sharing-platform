@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/1sh-repalto/e2ee-file-sharing-platform/internal/usecase"
+	"github.com/1sh-repalto/e2ee-file-sharing-platform/pkg/auth"
 	"github.com/gin-gonic/gin"
 )
 
@@ -60,9 +61,30 @@ func (h *UserHandler) Login(c *gin.Context) {
 		return
 	}
 
+	token, err := auth.GenerateToken(user.ID.String(), user.Username)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not generate token"})
+		return
+	}
+
+	c.SetCookie(
+		"auth_token",
+		token,
+		3600*24,
+		"/",
+		"",
+		true,
+		true,
+	)
+
 	c.JSON(http.StatusOK, gin.H{
 		"id":                    user.ID,
 		"username":              user.Username,
 		"encrypted_private_key": encryptedPrivateKey,
 	})
+}
+
+func (h *UserHandler) Logout (c *gin.Context) {
+	c.SetCookie("auth_token", "", -1, "/", "", true, true)
+	c.JSON(http.StatusOK, gin.H{"message": "logged out"})
 }
