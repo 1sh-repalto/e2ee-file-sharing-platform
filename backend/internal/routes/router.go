@@ -5,11 +5,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter(r *gin.Engine, userHandler *handler.UserHandler) *gin.Engine {
+func SetupRouter(r *gin.Engine, userHandler *handler.UserHandler, fileHandler *handler.FileHandler) *gin.Engine {
 
 	api := r.Group("/api")
 	{
 		AuthRoutes(api, userHandler)
+		FileRoutes(api, fileHandler)
 	}
 
 	return r

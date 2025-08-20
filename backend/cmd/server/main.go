@@ -22,11 +22,16 @@ func main() {
 	defer db.Close()
 
 	userRepo := repository.NewUserRepository(db)
+	fileRepo := repository.NewFileRepository(db)
+
 	userUsecase := usecase.NewUserUsecase(userRepo)
+	fileUsecase := usecase.NewFileUsecase(fileRepo)
+
 	userHandler := handler.NewUserHandler(userUsecase)
+	fileHandler := handler.NewFileHandler(fileUsecase)
 
 	r := gin.Default()
-	router.SetupRouter(r, userHandler)
+	router.SetupRouter(r, userHandler, fileHandler)
 
 	port := os.Getenv("PORT")
 	if port == "" {
