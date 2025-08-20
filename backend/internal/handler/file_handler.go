@@ -19,11 +19,11 @@ func NewFileHandler(fu usecase.FileUsecase) *FileHandler {
 
 func (h *FileHandler) Upload(c *gin.Context) {
 	var req struct {
-		Filename		string	`json:"filename" binding:"required"`
-		MimeType		string	`json:"mime_type" binding:"required"`
-		Size			int64	`json:"size" binding:"required"`
-		IV				[]byte  `json:"iv" binding:"required"`
-		EncryptedKey	[]byte	`json:"encrypted_key" binding:"required"`
+		Filename     string `json:"filename" binding:"required"`
+		MimeType     string `json:"mime_type" binding:"required"`
+		Size         int64  `json:"size" binding:"required"`
+		IV           []byte `json:"iv" binding:"required"`
+		EncryptedKey []byte `json:"encrypted_key" binding:"required"`
 	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -44,11 +44,11 @@ func (h *FileHandler) Upload(c *gin.Context) {
 	}
 
 	file := domain.File{
-		OwnerID: ownerID,
-		Filename: req.Filename,
-		MimeType: req.MimeType,
-		Size: req.Size,
-		IV: req.IV,
+		OwnerID:      ownerID,
+		Filename:     req.Filename,
+		MimeType:     req.MimeType,
+		Size:         req.Size,
+		IV:           req.IV,
 		EncryptedKey: req.EncryptedKey,
 	}
 
@@ -58,7 +58,7 @@ func (h *FileHandler) Upload(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"message": "file uploaded", "id": file.ID})
-	
+
 }
 
 func (h *FileHandler) GetByID(c *gin.Context) {

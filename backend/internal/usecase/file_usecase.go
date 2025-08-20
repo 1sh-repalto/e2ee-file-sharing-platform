@@ -14,7 +14,7 @@ type FileUsecase interface {
 	Upload(ctx context.Context, file domain.File) error
 	GetByID(ctx context.Context, id uuid.UUID) (domain.File, error)
 	ListByOwner(ctx context.Context, ownerID uuid.UUID) ([]domain.File, error)
-	Delete(ctx context.Context, id uuid.UUID, ownerID uuid.UUID) error 
+	Delete(ctx context.Context, id uuid.UUID, ownerID uuid.UUID) error
 }
 
 type fileUsecase struct {
