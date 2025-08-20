@@ -84,7 +84,7 @@ func (h *UserHandler) Login(c *gin.Context) {
 	})
 }
 
-func (h *UserHandler) Logout (c *gin.Context) {
+func (h *UserHandler) Logout(c *gin.Context) {
 	c.SetCookie("auth_token", "", -1, "/", "", true, true)
 	c.JSON(http.StatusOK, gin.H{"message": "logged out"})
 }

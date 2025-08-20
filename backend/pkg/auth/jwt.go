@@ -21,18 +21,18 @@ func getSecret() string {
 }
 
 type Claims struct {
-	UserID		string	`json:"user_id"`
-	Username	string	`json:"username"`
+	UserID   string `json:"user_id"`
+	Username string `json:"username"`
 	jwt.RegisteredClaims
 }
 
 func GenerateToken(userID, username string) (string, error) {
 	claims := Claims{
-		UserID: userID,
+		UserID:   userID,
 		Username: username,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)),
-			IssuedAt: jwt.NewNumericDate(time.Now()),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},
 	}
 

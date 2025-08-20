@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/1sh-repalto/e2ee-file-sharing-platform/internal/domain"
 	"github.com/google/uuid"
@@ -63,13 +64,22 @@ func (r *fileRepository) FindByOwner(ctx context.Context, ownerID uuid.UUID) ([]
 		}
 		files = append(files, f)
 	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
 	return files, nil
 }
 
 func (r *fileRepository) Delete(ctx context.Context, id uuid.UUID) error {
-	_, err := r.db.Exec(ctx, `
+	cmd, err := r.db.Exec(ctx, `
 		DELETE FROM files WHERE id = $1
 	`, id)
-
-	return err
+	if err != nil {
+		return err
+	}
+	if cmd.RowsAffected() == 0 {
+		return fmt.Errorf("file not found")
+	}
+	return nil
 }
