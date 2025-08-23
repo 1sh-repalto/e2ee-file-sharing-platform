@@ -23,15 +23,18 @@ func main() {
 
 	userRepo := repository.NewUserRepository(db)
 	fileRepo := repository.NewFileRepository(db)
+	shareRepo := repository.NewShareRepository(db)
 
 	userUsecase := usecase.NewUserUsecase(userRepo)
 	fileUsecase := usecase.NewFileUsecase(fileRepo)
+	shareUsecase := usecase.NewShareUsecase(shareRepo, fileRepo)
 
 	userHandler := handler.NewUserHandler(userUsecase)
 	fileHandler := handler.NewFileHandler(fileUsecase)
+	shareHandler := handler.NewShareHandler(shareUsecase)
 
 	r := gin.Default()
-	router.SetupRouter(r, userHandler, fileHandler)
+	router.SetupRouter(r, userHandler, fileHandler, shareHandler)
 
 	port := os.Getenv("PORT")
 	if port == "" {
