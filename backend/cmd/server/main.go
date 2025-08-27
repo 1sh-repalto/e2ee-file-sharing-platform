@@ -7,6 +7,7 @@ import (
 	"github.com/1sh-repalto/e2ee-file-sharing-platform/internal/handler"
 	"github.com/1sh-repalto/e2ee-file-sharing-platform/internal/repository"
 	router "github.com/1sh-repalto/e2ee-file-sharing-platform/internal/routes"
+	"github.com/1sh-repalto/e2ee-file-sharing-platform/internal/storage"
 	"github.com/1sh-repalto/e2ee-file-sharing-platform/internal/usecase"
 	"github.com/1sh-repalto/e2ee-file-sharing-platform/pkg/config"
 	"github.com/gin-gonic/gin"
@@ -21,12 +22,22 @@ func main() {
 	db := config.NewPostgresPool()
 	defer db.Close()
 
+	minioStorage, err := storage.NewMinioStorage(
+		"localhost:9000",
+		os.Getenv("MINIO_ROOT_USER"),
+		os.Getenv("MINIO_ROOT_PASSWORD"),
+		false,
+	)
+	if err != nil {
+		log.Fatalf("failed to init minio: %v", err)
+	}
+
 	userRepo := repository.NewUserRepository(db)
 	fileRepo := repository.NewFileRepository(db)
 	shareRepo := repository.NewShareRepository(db)
 
 	userUsecase := usecase.NewUserUsecase(userRepo)
-	fileUsecase := usecase.NewFileUsecase(fileRepo)
+	fileUsecase := usecase.NewFileUsecase(fileRepo, shareRepo, minioStorage)
 	shareUsecase := usecase.NewShareUsecase(shareRepo, fileRepo)
 
 	userHandler := handler.NewUserHandler(userUsecase)
