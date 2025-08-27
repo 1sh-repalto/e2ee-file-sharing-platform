@@ -1,0 +1,68 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTRGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-filesharing}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var//lib/postgresql/data
+
+  minio1:
+    image: minio/minio:latest
+    container_name: minio1
+    restart: always
+    command: server http://minio{1...4}/data --console-address ":9001"
+    environment: 
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    volumes:
+      - minio1_data:/data
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+  
+  minio2:
+    image: minio/minio:latest
+    container_name: minio2
+    restart: always
+    command: server http://{1...4}/data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    volumes:
+      - minio2_data:/data
+
+  minio3:
+    image: minio/minio:latest
+    container_name: minio3
+    restart: always
+    command: server http://{1...4}/data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    volumes:
+      - minio3_data:/data
+
+  minio4:
+    image: minio/minio:latest
+    container_name: minio4
+    restart: always
+    command: server http://{1...4}/data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    volumes:
+      - minio4_data:/data
+
+volumes:
+  postgres_data:
+  minio1_data:
+  minio2_data:
+  minio3_data:
+  minio4_data:
+  
